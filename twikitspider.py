@@ -1,9 +1,9 @@
 import asyncio
 from twikit import Client
 
-USERNAME = 'example_user'
-EMAIL = 'email@example.com'
-PASSWORD = 'password0000'
+USERNAME = 'sunny_jamerr'
+EMAIL = '1765423653@qq.com'
+PASSWORD = '1qaz@WSX12'
 
 # 初始化客户端
 client = Client('en-US')
