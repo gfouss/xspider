@@ -11,11 +11,13 @@ client = Client('en-US')
 
 async def main():
     await client.login(
-        auth_info_1=USERNAME ,
+        auth_info_1=USERNAME,
         auth_info_2=EMAIL,
         password=PASSWORD
     )
-    tweets = await client.get_user_tweets('elonmusk', 'Tweet')
+    #await client.create_tweet(text='Why can not a nose be 12 inches long? Because then it would be a foot.')
+    
+    tweets = await client.get_user_tweets('elonmusk', '1')
     for tweet in tweets:
         print(tweet.text)
 
