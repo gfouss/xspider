@@ -17,7 +17,7 @@ async def main():
     )
     #await client.create_tweet(text='Why can not a nose be 12 inches long? Because then it would be a foot.')
     
-    tweets = await client.get_user_tweets('elonmusk', '1')
+    tweets = await client.get_user_tweets('elonmusk', 'Tweets',count=1)
     for tweet in tweets:
         print(tweet.text)
 
