@@ -1,0 +1,20 @@
+[2025-03-09 16:07:25] 获取或写入数据失败: 'utf-8' codec can't decode byte 0xbf in position 2: invalid start byte
+[2025-03-09 16:08:59] 获取或写入数据失败: 'utf-8' codec can't decode byte 0xae in position 1: invalid start byte
+[2025-03-09 16:13:23] 操作失败: 'utf-8' codec can't decode byte 0xbe in position 2: invalid start byte
+[2025-03-09 16:16:41] 操作失败: 'utf-8' codec can't decode byte 0xbe in position 2: invalid start byte
+[2025-03-09 16:19:02] ����ʧ��: 'utf-8' codec can't decode byte 0xba in position 2: invalid start byte
+[2025-03-09 16:24:59] 操作失败: status: 400, message: "{"errors":[{"code":398,"message":"We were unable to confirm you're human. Please try again. g;174150869691595451:-1741508697214:kJfjAtEEBvRVqY30mtkNr647:5"}]}"
+[2025-03-09 16:26:48] 操作失败: 我们阻止了一次账号访问尝试，因为我们不确定是否为你本人在操作。当我们注意到异常的登录活动，比如反复尝试登录或从不同位置或设备登录时，我们就会采取阻止措施。你得等一会才能再次尝试登录。有些阻止会自动取消。获取有关登录问题的帮助。
+[2025-03-09 16:38:11] 操作失败: 'utf-8' codec can't decode byte 0xbd in position 2: invalid start byte
+[2025-03-09 18:45:11] 操作失败: 'utf-8' codec can't decode byte 0xbf in position 2: invalid start byte
+[2025-03-09 18:52:21] 操作失败: 'utf-8' codec can't decode byte 0xbd in position 2: invalid start byte
+[2025-03-09 18:53:40] 操作失败: 'utf-8' codec can't decode byte 0x9f in position 1: invalid start byte
+[2025-03-09 18:53:59] 操作失败: 'utf-8' codec can't decode byte 0xbe in position 2: invalid start byte
+[2025-03-09 18:55:06] 操作失败: 'utf-8' codec can't decode byte 0xac in position 1: invalid start byte
+[2025-03-09 18:55:42] 操作失败: 'utf-8' codec can't decode byte 0x96 in position 1: invalid start byte
+[2025-03-09 18:57:05] 操作失败: 'utf-8' codec can't decode byte 0xbc in position 2: invalid start byte
+[2025-03-09 18:57:40] 操作失败: 'Tweet' object has no attribute 'like_count'
+[2025-03-09 18:59:10] 操作失败: 'Tweet' object has no attribute 'likes'
+[2025-03-09 19:33:44] 操作失败: 'Tweet' object has no attribute 'like_count'
+[2025-03-09 19:34:26] 操作失败: 'Tweet' object has no attribute 'like_count'
+[2025-03-09 19:46:22] 操作失败: name 'existing_ids' is not defined

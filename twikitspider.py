@@ -5,17 +5,25 @@ from datetime import datetime
 import json
 import os
 
-USERNAME = 'sunny_jamerr'
-EMAIL = '1765423653@qq.com'
-PASSWORD = '1qaz@WSX12'
+# 设置常量
+BASE_DIR = '/Users/cn/VScode/newspider'
+CONTEXT_FILE = os.path.join(BASE_DIR, 'context.txt')
+
+# USERNAME = 'sunny_jamerr'
+# EMAIL = '1765423653@qq.com'
+# PASSWORD = '1qaz@WSX12'
 
 # USERNAME = 'frankyur169874'
 # EMAIL = 'frankliuyujie@outlook.com'
 # PASSWORD = '1qaz@WSX12'
 
+USERNAME = 'salinna1735526'
+EMAIL = 'andersonlinqin@163.com'
+PASSWORD = '1qaz@WSX12'
+
+
 # 设置代理
 proxy = 'socks5://127.0.0.1:7897'
-
 
 # 设置请求头
 headers = {
@@ -36,69 +44,93 @@ headers = {
 }
 
 # 初始化客户端
-client = Client('en-US', proxy=proxy, timeout=30.0, headers=headers)
+client = Client('en-US', proxy=proxy, timeout=30.0)
 
-async def save_cookies():
-    cookies = client.get_cookies()
-    with open('/Users/cn/VScode/newspider/cookies.json', 'wb') as f:
-        json.dump(cookies, f, ensure_ascii=True)
-
-async def load_cookies():
-    try:
-        with open('/Users/cn/VScode/newspider/cookies.json', 'rb') as f:
-            content = f.read()
-            if not content:  # 如果文件为空
-                return False
-            cookies = json.loads(content.decode('utf-8'))
-            await client.set_cookies(cookies)
-            return True
-    except (FileNotFoundError, json.JSONDecodeError):  # 处理文件不存在或JSON解析错误
-        return False
-
+# 删除 get_tweets_with_retry 函数
 
 async def main():
-    # 尝试加载cookies
-    if not await load_cookies():
+    try:
+        # 直接登录
         try:
-            # 如果没有cookies，则登录
             await client.login(
                 auth_info_1=USERNAME,
                 auth_info_2=EMAIL,
                 password=PASSWORD
             )
-            # 保存cookies
-            await save_cookies()
-        except Exception as e:
-            print(f"登录失败: {str(e)}")
-            print("建议等待一段时间后再尝试登录")
-            return  # 登录失败时退出程序
-    
-    try:
-        # 获取当前时间
+        except UnicodeDecodeError:
+            print("登录响应编码错误，正在重试...")
+            # 使用二进制模式处理响应
+            await asyncio.sleep(2)  # 等待2秒后重试
+            await client.login(
+                auth_info_1=USERNAME,
+                auth_info_2=EMAIL,
+                password=PASSWORD
+            )
+        
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
-        # 获取用户信息和推文
+        # 获取用户信息和推文，直接获取不重试
         user = await client.get_user_by_screen_name('elonmusk')
-        tweets = await client.get_user_tweets(user.id, 'Tweets', count=3)  # 移除 exclude 参数
+        tweets = await client.get_user_tweets(user.id, 'Tweets', count=3)
         
+        # 读取已存在的推文ID
+        existing_ids = set()
+        if os.path.exists(CONTEXT_FILE):
+            with open(CONTEXT_FILE, 'r', encoding='utf-8') as f:
+                for line in f:
+                    if line.startswith("推文ID: "):
+                        tweet_id = line.strip().split(": ")[1]
+                        existing_ids.add(tweet_id)
+        
+        # 确保文件存在
+        if not os.path.exists(CONTEXT_FILE):
+            with open(CONTEXT_FILE, 'w', encoding='utf-8') as f:
+                f.write("# Twitter 数据采集记录\n\n")
+
         # 写入文件
-        with open('/Users/cn/VScode/newspider/context.txt', 'a', encoding='utf-8') as f:
+        with open(CONTEXT_FILE, 'a', encoding='utf-8') as f:
             f.write(f"\n采集时间：{current_time}\n")
             f.write("-" * 50 + "\n")
             
+            has_new_tweets = False  # 添加标记
+            
             for tweet in tweets:
+                # 检查推文ID是否已存在
+                if str(tweet.id) in existing_ids:
+                    print(f"跳过重复推文 ID: {tweet.id}")
+                    continue
+                    
+                has_new_tweets = True  # 有新推文时设置标记
+                tweet_info = (
+                    f"推文ID: {tweet.id}\n"
+                    f"发布时间: {tweet.created_at}\n"
+                    f"内容: {tweet.text}\n"
+                    f"点赞数: {tweet.favorite_count}\n"
+                    f"转发数: {tweet.retweet_count}\n"
+                    f"回复数: {tweet.reply_count}\n"
+                )
+                
                 print('-' * 50)
-                print(tweet.text)
+                print(tweet_info)
                 print('-' * 50)
                 print()
                 
-                # 同时写入文件
-                f.write(f"{tweet.text}\n\n")
+                f.write(tweet_info + "\n")
+                existing_ids.add(str(tweet.id))  # 添加到已存在ID集合
+            
+            if not has_new_tweets:
+                f.write("无帖子更新！\n")
                 
             f.write("-" * 50 + "\n")
             f.write(f"结束时间：{current_time}\n")
+            
     except Exception as e:
-        print(f"获取或写入数据失败: {str(e)}")
+        error_msg = f"操作失败: {str(e).encode('ascii', 'ignore').decode('ascii')}"
+        print(error_msg)
+        try:
+            with open(os.path.join(BASE_DIR, 'error.log'), 'a', encoding='utf-8', errors='ignore') as f:
+                f.write(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {error_msg}\n")
+        except Exception as write_error:
+            print(f"写入错误日志失败: {str(write_error)}")
 
 asyncio.run(main())
-
