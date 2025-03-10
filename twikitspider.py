@@ -6,7 +6,7 @@ import json
 import os
 
 # 设置常量
-BASE_DIR = '/Users/cn/VScode/newspider'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CONTEXT_FILE = os.path.join(BASE_DIR, 'context.txt')
 
 # USERNAME = 'sunny_jamerr'

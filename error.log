@@ -18,3 +18,12 @@
 [2025-03-09 19:33:44] 操作失败: 'Tweet' object has no attribute 'like_count'
 [2025-03-09 19:34:26] 操作失败: 'Tweet' object has no attribute 'like_count'
 [2025-03-09 19:46:22] 操作失败: name 'existing_ids' is not defined
+[2025-03-10 15:44:33] 操作失败: status: 400, message: "{"errors":[{"code":399,"message":"Incorrect. Please try again. g;174159176082211260:-1741591761037:WimIM6p4cVPI0rTAAgD3pTtv:8"}]}"
+[2025-03-10 15:55:30] 操作失败: We blocked an attempt to access your account because we weren't sure it was really you.
+
+This happens when we notice unusual login activity, like an attempt to log in too many times, or from a different location or device.
+
+You'll need to wait before trying to log in again. Some blocks are removed automatically.
+
+Get help with login issues.
+[2025-03-10 16:25:46] 操作失败: 
