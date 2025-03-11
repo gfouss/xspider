@@ -6,7 +6,7 @@ from datetime import datetime
 def run_spider():
     try:
         print(f"\n[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 开始执行爬虫...")
-        subprocess.run(['python3', '/Users/cn/VScode/newspider/twikitspider.py'])
+        subprocess.run(['python3', './twikitspider.py'])
     except Exception as e:
         print(f"执行出错: {str(e)}")
 
