@@ -17,8 +17,12 @@ CONTEXT_FILE = os.path.join(BASE_DIR, 'context.txt')
 # EMAIL = 'frankliuyujie@outlook.com'
 # PASSWORD = '1qaz@WSX12'
 
-USERNAME = 'salinna1735526'
-EMAIL = 'andersonlinqin@163.com'
+# USERNAME = 'salinna1735526'
+# EMAIL = 'andersonlinqin@163.com'
+# PASSWORD = '1qaz@WSX12'
+
+USERNAME = 'EmilyGreen21447'
+EMAIL = 'zhangyueqin0321@163.com'
 PASSWORD = '1qaz@WSX12'
 
 # 设置代理
@@ -87,41 +91,52 @@ async def main():
                 f.write("# Twitter 数据采集记录\n\n")
 
         # 写入文件
-        with open(CONTEXT_FILE, 'a', encoding='utf-8') as f:
-            f.write(f"\n采集时间：{current_time}\n")
-            f.write("-" * 50 + "\n")
-            
-            has_new_tweets = False  # 添加标记
-            
-            for tweet in tweets:
-                # 检查推文ID是否已存在
-                if str(tweet.id) in existing_ids:
-                    print(f"跳过重复推文 ID: {tweet.id}")
-                    continue
-                    
-                has_new_tweets = True  # 有新推文时设置标记
-                tweet_info = (
-                    f"推文ID: {tweet.id}\n"
-                    f"发布时间: {tweet.created_at}\n"
-                    f"内容: {tweet.text}\n"
-                    f"点赞数: {tweet.favorite_count}\n"
-                    f"转发数: {tweet.retweet_count}\n"
-                    f"回复数: {tweet.reply_count}\n"
-                )
+        # 读取现有文件内容
+        existing_content = ""
+        if os.path.exists(CONTEXT_FILE):
+            with open(CONTEXT_FILE, 'r', encoding='utf-8') as f:
+                existing_content = f.read()
+        else:
+            existing_content = "# Twitter 数据采集记录\n\n"
+
+        # 准备新内容
+        new_content = f"采集时间：{current_time}\n"
+        new_content += "-" * 50 + "\n"
+        
+        has_new_tweets = False
+        
+        for tweet in tweets:
+            if str(tweet.id) in existing_ids:
+                print(f"跳过重复推文 ID: {tweet.id}")
+                continue
                 
-                print('-' * 50)
-                print(tweet_info)
-                print('-' * 50)
-                print()
-                
-                f.write(tweet_info + "\n")
-                existing_ids.add(str(tweet.id))  # 添加到已存在ID集合
+            has_new_tweets = True
+            tweet_info = (
+                f"推文ID: {tweet.id}\n"
+                f"发布时间: {tweet.created_at}\n"
+                f"内容: {tweet.text}\n"
+                f"点赞数: {tweet.favorite_count}\n"
+                f"转发数: {tweet.retweet_count}\n"
+                f"回复数: {tweet.reply_count}\n"
+            )
             
-            if not has_new_tweets:
-                f.write("无帖子更新！\n")
-                
-            f.write("-" * 50 + "\n")
-            f.write(f"结束时间：{current_time}\n")
+            print('-' * 50)
+            print(tweet_info)
+            print('-' * 50)
+            print()
+            
+            new_content += tweet_info + "\n"
+            existing_ids.add(str(tweet.id))
+        
+        if not has_new_tweets:
+            new_content += "无帖子更新！\n"
+            
+        new_content += "-" * 50 + "\n"
+        new_content += f"结束时间：{current_time}\n\n"
+        
+        # 将新内容写入文件开头
+        with open(CONTEXT_FILE, 'w', encoding='utf-8') as f:
+            f.write(new_content + existing_content)
             
     except Exception as e:
         error_msg = f"操作失败: {str(e).encode('ascii', 'ignore').decode('ascii')}"
