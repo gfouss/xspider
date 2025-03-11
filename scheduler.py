@@ -11,7 +11,7 @@ def run_spider():
         spider_script = os.path.join(current_dir, 'twikitspider.py')
         
         # 运行爬虫脚本
-        subprocess.run(['python', spider_script], check=True)
+        subprocess.run(['python3', spider_script], check=True)
         print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 爬虫运行完成")
     except subprocess.CalledProcessError as e:
         print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 爬虫运行失败: {e}")
