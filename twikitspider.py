@@ -21,7 +21,6 @@ USERNAME = 'salinna1735526'
 EMAIL = 'andersonlinqin@163.com'
 PASSWORD = '1qaz@WSX12'
 
-
 # 设置代理
 proxy = 'socks5://127.0.0.1:7897'
 
