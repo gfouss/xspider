@@ -36,3 +36,10 @@ Get help with login issues.
 [2025-03-12 05:10:22] 操作失败: 
 [2025-03-12 09:48:38] 操作失败: 
 [2025-03-12 13:26:32] 操作失败: 
+[2025-03-12 22:59:32] 操作失败: [Errno 2] No such file or directory: '/Users/cn/VScode/newspider/dada/content.txt'
+[2025-03-12 23:00:59] 操作失败: [Errno 2] No such file or directory: '/Users/cn/VScode/newspider/dada/content.txt'
+[2025-03-12 23:02:04] 操作失败: [Errno 2] No such file or directory: '/Users/cn/VScode/newspider/dada/content.txt'
+[2025-03-12 23:03:25] 操作失败: [Errno 2] No such file or directory: '/Users/cn/VScode/newspider/dada/content.txt'
+[2025-03-12 23:05:01] 操作失败: [Errno 2] No such file or directory: '/Users/cn/VScode/newspider/dada/content.txt'
+[2025-03-12 23:06:20] 操作失败: [Errno 2] No such file or directory: '/Users/cn/VScode/newspider/dada/content.txt'
+[2025-03-12 23:07:49] 操作失败: [Errno 2] No such file or directory: '/Users/cn/VScode/newspider/dada/content.txt'
