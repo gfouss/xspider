@@ -8,6 +8,7 @@ import os
 # 设置常量
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CONTEXT_FILE = os.path.join(BASE_DIR, 'context.txt')
+COOKIES_FILE = os.path.join(BASE_DIR, 'cookies.json')  # 新增cookies文件路径
 
 # USERNAME = 'sunny_jamerr'
 # EMAIL = '1765423653@qq.com'
@@ -53,22 +54,46 @@ client = Client('en-US', proxy=proxy, timeout=30.0)
 
 async def main():
     try:
-        # 直接登录
-        try:
-            await client.login(
-                auth_info_1=USERNAME,
-                auth_info_2=EMAIL,
-                password=PASSWORD
-            )
-        except UnicodeDecodeError:
-            print("登录响应编码错误，正在重试...")
-            # 使用二进制模式处理响应
-            await asyncio.sleep(2)  # 等待2秒后重试
-            await client.login(
-                auth_info_1=USERNAME,
-                auth_info_2=EMAIL,
-                password=PASSWORD
-            )
+        # 尝试从文件加载cookies
+        cookies_loaded = False
+        if os.path.exists(COOKIES_FILE):
+            try:
+                with open(COOKIES_FILE, 'r', encoding='utf-8') as f:
+                    cookies = json.load(f)
+                    # 直接使用 client 的方法设置 cookies
+                    client.set_cookies(cookies)
+                    cookies_loaded = True
+                    print("已从文件加载登录状态")
+            except Exception as e:
+                print(f"加载cookies失败: {e}")
+                cookies = None
+        
+        # 如果没有cookies或加载失败，则重新登录
+        if not cookies_loaded:
+            try:
+                await client.login(
+                    auth_info_1=USERNAME,
+                    auth_info_2=EMAIL,
+                    password=PASSWORD
+                )
+                # 保存cookies到文件
+                cookies = client.get_cookies()
+                with open(COOKIES_FILE, 'w', encoding='utf-8') as f:
+                    json.dump(cookies, f)
+                print("已保存登录状态")
+            except UnicodeDecodeError:
+                print("登录响应编码错误，正在重试...")
+                await asyncio.sleep(2)
+                await client.login(
+                    auth_info_1=USERNAME,
+                    auth_info_2=EMAIL,
+                    password=PASSWORD
+                )
+                # 保存cookies到文件
+                cookies = await client.get_cookies()
+                with open(COOKIES_FILE, 'w', encoding='utf-8') as f:
+                    json.dump(cookies, f)
+                print("已保存登录状态")
         
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
